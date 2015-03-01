@@ -1,0 +1,28 @@
+﻿<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Chat</title>
+  <link rel="stylesheet" href="style.css">
+ </head>
+ <body>
+ <div class="page-container">  
+  <form name="Name" method="post" action="input1.php">
+   <p><b>Ваше имя:</b><br></p>
+   <input type="text" placeholder = "Введите ваш nickname" class="Name" >
+   <div class="Indicator"</div>
+  </form>
+  <form name="HistoryOfMessage" method="post" action ="messages.php">
+    <textarea class="HistoryOfMessages">История сообщений:</textarea>
+    <table>
+     <tr><td>Удалить</td></tr>
+     <tr><th>Редактировать</th></tr>
+    </table>
+  </form>
+  <form name="InputMessage" method="post" action="input1.php">
+   <input type="text" placeholder = "Введите сообщение" class="Message" >
+   <input type="submit" class="Button">
+  </form>
+  </div>
+ </body>
+</html>
