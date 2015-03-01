@@ -1,0 +1,107 @@
+﻿body {
+   margin:0;
+   background: deepskyblue url(sea.jpg)no-repeat;
+   -webkit-background-size: 100%;
+   background-size: 100%;
+}
+.page-container {
+  min-width: 960px;
+  max-width: 75%;
+  margin: 0 auto;
+  padding: 0;
+  }
+p {
+   color: blue;
+   padding-left: 20px;
+   padding-top: 25px;
+   padding-bottom: 0;
+   margin-bottom: 0;
+   font-size: 100%;
+}
+
+input.Name {
+    margin-left: 20px;
+    margin-top: 5px;
+    size: 80px; 
+    height: 30px;  
+    border: solid 3px blue; 
+    color: blue;
+    background: white;
+    font-size: 120%;
+    border-radius: 10px;
+} 
+.Indicator {
+    margin-left: 280px;
+    margin-top: -30px;
+    width: 24px;
+    height: 24px;
+    background: lime;
+    border: lime;
+    -moz-border-radius: 12px;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+}
+textarea.HistoryOfMessages {
+    margin-left: -220px;
+    margin-top: 60px;
+    overflow: scroll;
+    scrollbar-arrow-color: blue;
+    scrollbar-face-color: aquamarine;
+    width: 750px; 
+    height: 370px;  
+    border: solid 3px blue; 
+    color: blue;
+    background: white;
+    font-size: 100%;
+} 
+table {
+    margin-left: 560px;
+    margin-top: -270px;
+    width: 50px;
+    height: 50px;
+    border: solid 3px blue;
+    bordercolor: blue;
+    color: blue;
+    background: white;
+    cols: 0;
+    border-radius: 10px;
+}
+TD, TH { 
+    text-align: center; 
+    background: white;
+    color: blue;
+    border: none;
+    bgcolor: white; 
+}
+TD {
+    border-bottom: 3px solid blue; 
+   }
+input.Message {
+    margin-left: -220px;
+    margin-top: 240px;
+    overflow: auto;
+    scrollbar-arrow-color: blue;
+    scrollbar-face-color: aquamarine;
+    width: 640px; 
+    height: 80px; 
+    padding: 1px; 
+    border: solid 3px blue; 
+    color: blue;
+    background: white;
+    font-size: 120%;
+    border-radius: 10px;
+} 
+input.Button {
+    position: absolute;
+    padding: 1px;
+    margin-left: 460px;
+    margin-top: -60px;
+    value= "Отправить";
+    color: blue;
+    border: solid 3px blue;
+    background: white;
+    font-size: 120%;
+    border-radius: 10px;
+    width: 180px;
+    height: 40px;
+}
