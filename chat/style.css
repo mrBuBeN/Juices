@@ -1,4 +1,4 @@
-﻿body {
+body {
    margin:0;
    background: deepskyblue url(sea.jpg)no-repeat;
    -webkit-background-size: 100%;
@@ -24,13 +24,14 @@ input.Name {
     margin-top: 5px;
     size: 80px; 
     height: 30px;  
-    border: solid 3px blue; 
+    border: solid 3px #FFFFFF; 
     color: blue;
     background: white;
     font-size: 120%;
     border-radius: 10px;
 } 
 .Indicator {
+    position: absolute;
     margin-left: 280px;
     margin-top: -30px;
     width: 24px;
@@ -41,7 +42,7 @@ input.Name {
     -webkit-border-radius: 12px;
     border-radius: 12px;
 }
-textarea.HistoryOfMessages {
+.HistoryOfMessages {
     margin-left: -220px;
     margin-top: 60px;
     overflow: scroll;
@@ -54,28 +55,6 @@ textarea.HistoryOfMessages {
     background: white;
     font-size: 100%;
 } 
-table {
-    margin-left: 560px;
-    margin-top: -270px;
-    width: 50px;
-    height: 50px;
-    border: solid 3px blue;
-    bordercolor: blue;
-    color: blue;
-    background: white;
-    cols: 0;
-    border-radius: 10px;
-}
-TD, TH { 
-    text-align: center; 
-    background: white;
-    color: blue;
-    border: none;
-    bgcolor: white; 
-}
-TD {
-    border-bottom: 3px solid blue; 
-   }
 input.Message {
     margin-left: -220px;
     margin-top: 240px;
@@ -91,6 +70,17 @@ input.Message {
     font-size: 120%;
     border-radius: 10px;
 } 
+input.Edit {
+    margin-left: 560px;
+    margin-top: -270px;
+    width: 90px;
+    height: 50px;
+    border: solid 3px blue;
+    bordercolor: blue;
+    color: blue;
+    background: white;
+    border-radius: 10px;
+}
 input.Button {
     position: absolute;
     padding: 1px;
@@ -104,4 +94,25 @@ input.Button {
     border-radius: 10px;
     width: 180px;
     height: 40px;
+}
+.removeButton {
+    value="r";
+    float: right;
+    margin-right: 20px;
+    margin-top 10px;
+    height: 10px;
+    width: 10px;
+    
+}
+.left-float {
+    float : left;
+}
+.editButton {
+    value="e";
+    value="r";
+    float: right;
+    margin-right: 20px;
+    margin-top 10px;
+    height: 10px;
+    width: 10px;
 }
