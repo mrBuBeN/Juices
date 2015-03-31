@@ -1,0 +1,12 @@
+GET http://localhost:8888/chat?token=TN171EN HTTP/1.1
+User-Agent: Java/1.8.0_20
+Host: localhost:8888
+Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+Connection: keep-alive
+
+
+HTTP/1.1 200 Generated
+Content-Length: 83
+Content-Type: text/plain; charset=utf-8
+
+{"messages":["Meleshko","Kulakov","Kitarov","Yevenko","Goroshko"],"token":"TN51EN"}
