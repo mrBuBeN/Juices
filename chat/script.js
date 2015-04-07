@@ -1,18 +1,18 @@
-$(document).ready(function(){
-    $('.Button').click(function(){
+$(document).ready(function() {
+    $('.Button').click(function() {
         var nickName = $('.Name').val();
         var message = $('.Message').val();
         
-        if( (nickName == "") || (message == "")) {
+        if((nickName == "") || (message == "")) {
             if(nickName == "") {
                 alert("There is no name");
             } else {
-                alert("Ther is no message");
+                alert("There is no message");
             }
         } else {
             var newSpanNick = document.createElement('span');
             newSpanNick.className = 'nickName';
-            newSpanNick.innerHTML = nickName + ':' + '\t';
+            newSpanNick.innerHTML = nickName + " : "+'\n';
             var newSpanMessage = document.createElement('span');
             newSpanMessage.className = 'msg';
             newSpanMessage.innerHTML = message;
@@ -43,13 +43,13 @@ $(document).ready(function(){
     
     $message = null;
     
-    $('.HistoryOfMessages').on('click', 'button.editButton',function(){
+    $('.HistoryOfMessages').on('click', 'button.editButton',function() {
         $message = $(this).closest('.allMessages').find('.msg');
         $tmp = $message.html();
         $('.Message').val($tmp);
     })
     
-    $('.Edit').click(function(){
+    $('.Edit').click(function() {
         var str = $('.Message').val();
         $message.html(str);
     })
