@@ -1,9 +1,12 @@
+'use strict';
+
 var uniqueId = function() {
 	var date = Date.now();
 	var random = Math.random() * Math.random();
     
 	return Math.floor(date * random).toString();
 };
+
 var report = function(name, message) {
 	return {
 		nick: name,
@@ -14,9 +17,14 @@ var report = function(name, message) {
 
 var messageList = new Array();
 
+var appState = {
+    mainUrl : 'http://localhost:1555/chat',
+    messList:[],
+    token : 'TE11EN'
+};
+
 $(document).ready(function() {
-    if (localStorage.getItem("Chat messageList") != null)
-        messageList = restore();
+    restore();
     createAllMessages();
     $('.Button').click(function() {
         var nickName = $('.Name').val();
@@ -31,9 +39,8 @@ $(document).ready(function() {
         } else {
             
             $('.Message').val('');
-            addMess(report(nickName, message));
+            addMessage(report(nickName, message));
             localStorage.clear();
-            store();
         }
     })
     
@@ -41,6 +48,7 @@ $(document).ready(function() {
         for (var i = 0; i < messageList.length; i++)
         {
             if (messageList[i].id == this.parentElement.parentElement.id) {
+                del(appState.mainUrl, JSON.stringify(messageList[i]));
                 for (var j = i; j < messageList.length - 1; j++)
                     messageList[j] = messageList[j+1];
                 messageList.length--;
@@ -48,18 +56,16 @@ $(document).ready(function() {
             }
         }
         $(this).parent().parent().remove();
-        localStorage.clear();
-        store();
     })
     
-    $statement = null;
-    $numOfMessage = 0;
+    var statement = 0;
+    var numOfMessage = 0;
     $('.HistoryOfMessages').on('click', 'button.editButton',function() {
-        $nickName = $('.Name').val()+ " : "+'\n';
-        $nickN = $(this).closest('.allMessages').find('.nick').html();
-        if($nickName == $nickN)
+        var nickName = $('.Name').val()+ " : "+'\n';
+        var nickN = $(this).closest('.allMessages').find('.nick').html();
+        if(nickName == nickN)
         {
-            $statement = $(this).closest('.allMessages').find('.msg');
+            statement = $(this).closest('.allMessages').find('.msg');
             for (var i = 0; i < messageList.length; i++)
             {
                 if(this.parentElement.parentElement.id == messageList[i].id)
@@ -68,8 +74,8 @@ $(document).ready(function() {
                     break;
                 }
             }
-            $tmp = $statement.html();
-            $('.Message').val($tmp);
+            var tmp = statement.html();
+            $('.Message').val(tmp);
         } else
             alert("You can't change message!!!");
         
@@ -77,24 +83,26 @@ $(document).ready(function() {
     
     $('.Edit').click(function() {
         var str = $('.Message').val();
-        messageList[numOfMessage].mess= str;
-        $statement.html(str);
-        localStorage.clear();
-        store();
+        messageList[numOfMessage].mess = str;
+        put(appState.mainUrl, JSON.stringify(messageList[numOfMessage]));
+        statement.html(str);
     })
      
 })
 
-function createAllMessages() {
-    if(messageList.length != null) {
-	   for(var i = 0; i < messageList.length; i++)
-           output(messageList[i]);
-    }
+function addMessage (mess) {
+    messageList.push(mess);
+    createMessage(mess);
+    post(appState.mainUrl, JSON.stringify(mess));
 }
 
-function addMess(message) {
-    output(message);
-    messageList.push(message);
+function createAllMessages(allMessages) {
+    if (allMessages != null)
+        for(var i = 0; i < allMessages.length; i++)
+        {
+            createMessage(allMessages[i]);
+            messageList.push(allMessages[i]);
+        }
 }
 
 function createItem(message){
@@ -103,16 +111,7 @@ function createItem(message){
 	return temp;
 }
 
-function store() {
-	if(typeof(Storage) == "undefined") {
-		alert('localStorage is not accessible');
-		return;
-	}
-
-	localStorage.setItem("Chat messageList", JSON.stringify(messageList));
-}
-
-function output(message) {
+function createMessage(message) {
     var nickName = message.nick;
     var messageText = message.mess;
     var newSpanNick = document.createElement('span');
@@ -140,12 +139,87 @@ function output(message) {
     $('.HistoryOfMessages').append(msgWrap);
 }
 
-function restore() {
-	if(typeof(Storage) == "undefined") {
-		alert('localStorage is not accessible');
-		return;
+function restore(continueWith) {
+    var url = appState.mainUrl + '?token=' + appState.token;
+    get(url, function(responseText) {
+    console.assert(responseText != null);
+    var response = JSON.parse(responseText);
+    appState.token = response.token;
+    if (response.messages)
+        createAllMessages(response.messages);
+    continueWith && continueWith();
+    });
+}
+
+function get(url, continueWith, continueWithError) {
+    ajax('GET', url, null, continueWith, continueWithError);
+}
+
+function post(url, data, continueWith, continueWithError) {
+    ajax('POST', url, data, continueWith, continueWithError);	
+}
+
+function put(url, data, continueWith, continueWithError) {
+    ajax('PUT', url, data, continueWith, continueWithError);	
+}
+
+function del(url, data, continueWith, continueWithError) {
+    ajax('DELETE', url, data, continueWith, continueWithError);	
+}
+
+function isError(text) {
+    if(text == "")
+	return false;
+	
+    try {
+	var obj = JSON.parse(text);
+    } catch(ex) {
+	return true;
+    }
+
+    return !!obj.error;
+}
+
+function defaultErrorHandler(mess) {
+    console.error(mess);
+}
+
+function ajax(method, url, data, continueWith, continueWithError) {
+    var xhr = new XMLHttpRequest();
+
+    continueWithError = continueWithError || defaultErrorHandler;
+    xhr.open(method || 'GET', url, true);
+
+    xhr.onload = function () {
+	if (xhr.readyState !== 4)
+	    return;
+	if(xhr.status != 200) {
+	    continueWithError('Error on the server side, response ' + xhr.status);
+	    return;
 	}
-    
-	var item = localStorage.getItem("Chat messageList");
-    return JSON.parse(item);
+
+	if(isError(xhr.responseText)) {
+	    continueWithError('Error on the server side, response ' + xhr.responseText);
+	    return;
+	}
+	if(xhr.responseText) {
+	    continueWith(xhr.responseText);
+	}
+    };
+
+    xhr.onimeout = function () {
+        continueWithError('Server timed out !');
+    }
+
+    xhr.onerror = function (e) {
+	var errMsg = 'Server connection error !\n'+
+	'\n' +
+	'Check if \n' +
+	'- server is active\n'+
+	'- server sends header "Access-Control-Allow-Origin:*"';
+
+	continueWithError(errMsg);
+    };
+
+    xhr.send(data);
 }
